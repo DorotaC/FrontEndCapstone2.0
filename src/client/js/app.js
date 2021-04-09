@@ -26,18 +26,19 @@ function generateAndPost(event) {
     const tripDateRefined = (tripDate.getMonth()+1)+'/'+ tripDate.getDate()+'/'+ tripDate.getFullYear();
     const daysToTrip = Math.ceil((tripDate.getTime() - d.getTime())/(1000 * 3600 * 24));
     Client.postHandler('/getLocation', {uInput: city})
-    .then(function(cityData){
-        //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
-        Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
-                                        country: cityData.geonames[0].countryName,
-                                        latitude: cityData.geonames[0].lat,
-                                        longitude: cityData.geonames[0].lng,
-                                        tripDate: tripDateRefined,
-                                        daysToTrip: daysToTrip});
-    })
+     .then(function(cityData){
+       console.log(cityData)
+    //     //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
+    //     Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
+    //                                     country: cityData.geonames[0].countryName,
+    //                                     latitude: cityData.geonames[0].lat,
+    //                                     longitude: cityData.geonames[0].lng,
+    //                                     tripDate: tripDateRefined,
+    //                                     daysToTrip: daysToTrip});
+     })
     .then(function() {
       updateUI()
-    });
+     });
   }
 }
 
