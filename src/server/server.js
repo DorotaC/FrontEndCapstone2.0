@@ -41,9 +41,11 @@ app.get('/', function(req, res){
 
 app.post('/getLocation', async (req, res) => {
   //const apiURL = `https://api.openweathermap.org/data/2.5/weather?zip=${req.body.uInput}&appid=${process.env.API_KEY}&units=imperial`
-  const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
-  const apiResponseGeonames = await fetch(apiURLGeonames);
+  // const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
+  // const apiResponseGeonames = await fetch(apiURLGeonames);
   try {
+    const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
+    const apiResponseGeonames = await fetch(apiURLGeonames);
     const cityDataGeonames = await apiResponseGeonames.json();
     console.log('cityDataGeonames', cityDataGeonames)
       {
