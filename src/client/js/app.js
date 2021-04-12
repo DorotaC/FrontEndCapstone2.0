@@ -1,7 +1,6 @@
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = (d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear();
-console.log(newDate)
 
 function init() {
   const generateButton = document.getElementById('generate');
@@ -13,7 +12,6 @@ function generateAndPost(event) {
   const cityField = document.getElementById('city');
   const tripDateRaw = document.getElementById('tripDate').value;
   const tripDate = new Date(tripDateRaw);
-  console.log(tripDateRaw)
   //console.log('pattern mismatch: ' + tripDateRaw.validity.patternMismatch)
   if (cityField.validity.patternMismatch || cityField.value == ''){
     alert('City name is not correct. Only latin letters and dash symbol are accepted \'\-\'.');
@@ -27,14 +25,25 @@ function generateAndPost(event) {
     const daysToTrip = Math.ceil((tripDate.getTime() - d.getTime())/(1000 * 3600 * 24));
     Client.postHandler('/getLocation', {uInput: city})
      .then(function(cityData){
+       console.log("cityData: ")
        console.log(cityData)
-    //     //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
-    //     Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
-    //                                     country: cityData.geonames[0].countryName,
-    //                                     latitude: cityData.geonames[0].lat,
-    //                                     longitude: cityData.geonames[0].lng,
-    //                                     tripDate: tripDateRefined,
-    //                                     daysToTrip: daysToTrip});
+        //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
+        // Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
+        //                                 country: cityData.geonames[0].countryName,
+                                        // latitude: cityData.geonames[0].lat,
+                                        // longitude: cityData.geonames[0].lng,
+                                        // tripDate: tripDateRefined,
+                                        // daysToTrip: daysToTrip});
+        Client.postHandler('/cityData', {cityName: cityData.cityName,
+                                        country: cityData.country,
+                                        lowTempCurrent: cityData.lowTempCurrent,
+                                        lowTempForecast: cityData.lowTempForecast,
+                                        maxTempCurrent: cityData.maxTempCurrent,
+                                        maxTempForecast: cityData.maxTempForecast,
+                                        cloudsCurrent: cityData.cloudsCurrent,
+                                        cloudsForecast: cityData.cloudsForecast,
+                                        tripDate: tripDateRefined,
+                                        daysToTrip: daysToTrip});
      })
     .then(function() {
       updateUI()
@@ -47,11 +56,21 @@ const updateUI = async () => {
   const req = await fetch('/all');
   try {
     const reqData = await req.json();
+    console.log('reqData')
     console.log(reqData);
     document.getElementById('cityName').innerHTML = reqData.cityName;
     document.getElementById('country').innerHTML = reqData.country;
     document.getElementById('date').innerHTML = reqData.tripDate;
     document.getElementById('daysToTrip').innerHTML = reqData.daysToTrip;
+    if (reqData.daysToTrip <= 7) {
+        document.getElementById('lowTemp').innerHTML = reqData.lowTempCurrent;
+        document.getElementById('maxTemp').innerHTML = reqData.maxTempCurrent;
+        document.getElementById('clouds').innerHTML = reqData.cloudsCurrent;
+    } else {
+        document.getElementById('lowTemp').innerHTML = reqData.lowTempForecast;
+        document.getElementById('maxTemp').innerHTML = reqData.maxTempForecast;
+        document.getElementById('clouds').innerHTML = reqData.cloudsForecast;
+    }
   } catch(error) {
     console.log(error);
   }

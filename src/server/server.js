@@ -52,10 +52,10 @@ app.post('/getLocation', async (req, res) => {
         console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
         const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
         const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
-        const cityDataWeatherbit = await apiResponseWeatherbit.json();
+        //doesn't work with const
+        //const cityDataWeatherbit = await apiResponseWeatherbit.json();
         //works with var
-        //var cityDataWeatherbit = await apiResponseWeatherbit.json();
-        //console.log(cityDataWeatherbit)
+        var cityDataWeatherbit = await apiResponseWeatherbit.json();
   }
   cityData = {
     cityName: cityDataGeonames.geonames[0].name,
@@ -104,5 +104,11 @@ function sendData(req, res) {
    projectData.country = req.body.country;
    projectData.tripDate = req.body.tripDate;
    projectData.daysToTrip = req.body.daysToTrip;
+   projectData.lowTempCurrent = req.body.lowTempCurrent;
+   projectData.lowTempForecast = req.body.lowTempForecast;
+   projectData.maxTempCurrent = req.body.maxTempCurrent;
+   projectData.maxTempForecast = req.body.maxTempForecast;
+   projectData.cloudsCurrent = req.body.cloudsCurrent;
+   projectData.cloudsForecast = req.body.cloudsForecast;
    console.log("Got a POST request for the cityData route");
  })
