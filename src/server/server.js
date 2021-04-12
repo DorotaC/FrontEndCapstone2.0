@@ -74,7 +74,7 @@ app.post('/getLocation', async (req, res) => {
     lowTempForecast: cityDataWeatherbit.data[15].low_temp,
     maxTempForecast: cityDataWeatherbit.data[15].max_temp,
     cloudsForecast: cityDataWeatherbit.data[15].weather.description,
-    photo: cityDataPixabay.hits[4].pageURL,
+    photo: cityDataPixabay.hits[0].webformatURL,
   }
     console.log(cityData)
     res.send(cityData)
