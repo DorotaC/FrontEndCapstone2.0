@@ -45,9 +45,12 @@ app.post('/getLocation', async (req, res) => {
   const apiResponseGeonames = await fetch(apiURLGeonames);
   try {
     const cityDataGeonames = await apiResponseGeonames.json();
+    console.log('cityDataGeonames', cityDataGeonames)
       {
         const latitude = cityDataGeonames.geonames[0].lat;
         const longitude = cityDataGeonames.geonames[0].lng;
+        const cityName = cityDataGeonames.geonames[0].name;
+        const country = cityDataGeonames.geonames[0].countryName;
         console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
         console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
         const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
@@ -56,6 +59,11 @@ app.post('/getLocation', async (req, res) => {
         //const cityDataWeatherbit = await apiResponseWeatherbit.json();
         //works with var
         var cityDataWeatherbit = await apiResponseWeatherbit.json();
+        const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
+        const apiResponsePixabay = await fetch(apiURLPixabay)
+        console.log("apiResponsePixabay:", apiResponsePixabay)
+        var cityDataPixabay = await apiResponsePixabay.json();
+        console.log("cityDataPixabay:", cityDataPixabay)
   }
   cityData = {
     cityName: cityDataGeonames.geonames[0].name,
@@ -66,6 +74,7 @@ app.post('/getLocation', async (req, res) => {
     lowTempForecast: cityDataWeatherbit.data[15].low_temp,
     maxTempForecast: cityDataWeatherbit.data[15].max_temp,
     cloudsForecast: cityDataWeatherbit.data[15].weather.description,
+    photo: cityDataPixabay.hits[4].pageURL,
   }
     console.log(cityData)
     res.send(cityData)
@@ -110,5 +119,6 @@ function sendData(req, res) {
    projectData.maxTempForecast = req.body.maxTempForecast;
    projectData.cloudsCurrent = req.body.cloudsCurrent;
    projectData.cloudsForecast = req.body.cloudsForecast;
+   projectData.photo = req.body.photo;
    console.log("Got a POST request for the cityData route");
  })

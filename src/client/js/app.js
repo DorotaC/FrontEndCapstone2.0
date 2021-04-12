@@ -43,7 +43,8 @@ function generateAndPost(event) {
                                         cloudsCurrent: cityData.cloudsCurrent,
                                         cloudsForecast: cityData.cloudsForecast,
                                         tripDate: tripDateRefined,
-                                        daysToTrip: daysToTrip});
+                                        daysToTrip: daysToTrip,
+                                        photo: cityData.photo});
      })
     .then(function() {
       updateUI()
@@ -71,6 +72,8 @@ const updateUI = async () => {
         document.getElementById('maxTemp').innerHTML = reqData.maxTempForecast;
         document.getElementById('clouds').innerHTML = reqData.cloudsForecast;
     }
+    document.getElementById("photo").src = reqData.photo;
+    console.log(photo)
   } catch(error) {
     console.log(error);
   }
