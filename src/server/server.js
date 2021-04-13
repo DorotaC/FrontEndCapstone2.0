@@ -47,26 +47,26 @@ app.post('/getLocation', async (req, res) => {
     const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
     const apiResponseGeonames = await fetch(apiURLGeonames);
     const cityDataGeonames = await apiResponseGeonames.json();
-    console.log('cityDataGeonames', cityDataGeonames)
-      {
-        const latitude = cityDataGeonames.geonames[0].lat;
-        const longitude = cityDataGeonames.geonames[0].lng;
-        const cityName = cityDataGeonames.geonames[0].name;
-        const country = cityDataGeonames.geonames[0].countryName;
-        console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
-        console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
-        const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
-        const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
-        //doesn't work with const
-        //const cityDataWeatherbit = await apiResponseWeatherbit.json();
-        //works with var
-        var cityDataWeatherbit = await apiResponseWeatherbit.json();
-        const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
-        const apiResponsePixabay = await fetch(apiURLPixabay)
-        console.log("apiResponsePixabay:", apiResponsePixabay)
-        var cityDataPixabay = await apiResponsePixabay.json();
-        console.log("cityDataPixabay:", cityDataPixabay)
-  }
+    //console.log('cityDataGeonames', cityDataGeonames)
+
+    const latitude = cityDataGeonames.geonames[0].lat;
+    const longitude = cityDataGeonames.geonames[0].lng;
+    const cityName = cityDataGeonames.geonames[0].name;
+    const country = cityDataGeonames.geonames[0].countryName;
+    //console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
+    //console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
+    const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
+    const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
+    //doesn't work with const
+    //const cityDataWeatherbit = await apiResponseWeatherbit.json();
+    //works with var
+    const cityDataWeatherbit = await apiResponseWeatherbit.json();
+    const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
+    const apiResponsePixabay = await fetch(apiURLPixabay)
+    //console.log("apiResponsePixabay:", apiResponsePixabay)
+    const cityDataPixabay = await apiResponsePixabay.json();
+    //console.log("cityDataPixabay:", cityDataPixabay)
+
   cityData = {
     cityName: cityDataGeonames.geonames[0].name,
     country: cityDataGeonames.geonames[0].countryName,
@@ -78,7 +78,7 @@ app.post('/getLocation', async (req, res) => {
     cloudsForecast: cityDataWeatherbit.data[15].weather.description,
     photo: cityDataPixabay.hits[0].webformatURL,
   }
-    console.log(cityData)
+    //console.log(cityData)
     res.send(cityData)
   } catch(error) {
     console.log('error', error);
@@ -110,7 +110,7 @@ function sendData(req, res) {
 
 //POST route that adds incoming data to projectData object
  app.post('/cityData', function(req, res){
-   console.log(req.body);
+   //console.log(req.body);
    projectData.cityName = req.body.cityName;
    projectData.country = req.body.country;
    projectData.tripDate = req.body.tripDate;

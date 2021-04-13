@@ -10,14 +10,14 @@ function init() {
 //Main function that gets data from API as well as user data and dynamically update UI
 function generateAndPost(event) {
   const cityField = document.getElementById('city');
-  const tripDateRaw = document.getElementById('tripDate').value;
-  const tripDate = new Date(tripDateRaw);
+  const tripDateRaw = document.getElementById('tripDate');
+  const tripDate = new Date(tripDateRaw.value);
   //console.log('pattern mismatch: ' + tripDateRaw.validity.patternMismatch)
   if (cityField.validity.patternMismatch || cityField.value == ''){
     alert('City name is not correct. Only latin letters and dash symbol are accepted \'\-\'.');
     //line below produces error because of Uncaught TypeError: Cannot read property 'patternMismatch' of undefined at HTMLButtonElement.i
-  //} else if (tripDateRaw == '' || (tripDate < d) || tripDateRaw.validity.patternMismatch) {
-    } else if (tripDateRaw == '' || (tripDate < d)) {
+    } else if (tripDateRaw == '' || (tripDate < d) || tripDateRaw.validity.patternMismatch) {
+    //} else if (tripDateRaw == '' || (tripDate < d)) {
     alert('Date is not correct. Correct format is MM/DD/YYYY. You cannot plan departure earlier than tommorow')
   } else {
     const city = cityField.value;
