@@ -18,7 +18,7 @@ function generateAndPost(event) {
   if (cityField.validity.patternMismatch || cityField.value == ''){
     alert('City name is not correct. Only latin letters and dash symbol are accepted \'\-\'.');
     } else if (tripDateRaw == '' || (tripDate < d) || tripDateRaw.validity.patternMismatch) {
-      alert('Date is not correct. Correct format is MM/DD/YYYY. You cannot plan departure earlier than tommorow')
+      alert('Date is not correct. Correct format is MM/DD/YYYY. You cannot plan departure earlier than tommorow');
     } else {
         const city = cityField.value;
         //Number of days to wait for the trip is calculated, based on value from user input
@@ -29,7 +29,7 @@ function generateAndPost(event) {
          .then(function(cityData){
            //in case no city/place was found in Geonames database, an alert will appear.
            if ('message' in cityData){
-             alert(cityData.message)
+             alert(cityData.message);
            } else {
              //complete city data are being send to appear on the website as a 'most recent entry'
              Client.postHandler('/cityData', {cityName: cityData.cityName,
