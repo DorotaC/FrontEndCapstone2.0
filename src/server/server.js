@@ -64,11 +64,19 @@ app.post('/getLocation', async (req, res) => {
         //const cityDataWeatherbit = await apiResponseWeatherbit.json();
         //works with var
         const cityDataWeatherbit = await apiResponseWeatherbit.json();
-        const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
-        const apiResponsePixabay = await fetch(apiURLPixabay)
+
+        //Pixabay - has to be 'let', to change for country search if needed (in case of no hits)
+        let apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
+        let apiResponsePixabay = await fetch(apiURLPixabay)
         //console.log("apiResponsePixabay:", apiResponsePixabay)
-        const cityDataPixabay = await apiResponsePixabay.json();
-        //console.log("cityDataPixabay:", cityDataPixabay)
+        let cityDataPixabay = await apiResponsePixabay.json();
+        console.log('total hits: ', cityDataPixabay.totalHits)
+        if (cityDataPixabay.totalHits === 0) {
+          apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${country}&image_type=photo`
+          apiResponsePixabay = await fetch(apiURLPixabay)
+          cityDataPixabay = await apiResponsePixabay.json();
+        }
+        //console.log("----------cityDataPixabay:--------------", cityDataPixabay)
 
       cityData = {
         cityName: cityDataGeonames.geonames[0].name,
@@ -81,10 +89,9 @@ app.post('/getLocation', async (req, res) => {
         cloudsForecast: cityDataWeatherbit.data[15].weather.description,
         photo: cityDataPixabay.hits[0].webformatURL,
       }
-        //console.log(cityData)
+        //console.log('---------', cityData)
         res.send(cityData)
     }
-
   } catch(error) {
     console.log('error', error);
    };
