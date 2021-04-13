@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+const projectData = {};
 
 // Require Express to run server and routes
 const express = require('express');
@@ -32,6 +32,9 @@ const server = app.listen(port, listening);
 function listening(){
   console.log(`running on localport ${port}`);
 }
+
+//export for jest purposes
+module.exports = server;
 
 app.get('/', function(req, res){
   res.sendFile('dist/index.html');
