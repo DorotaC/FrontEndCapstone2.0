@@ -18,8 +18,8 @@ function generateAndPost(event) {
     //line below produces error because of Uncaught TypeError: Cannot read property 'patternMismatch' of undefined at HTMLButtonElement.i
     } else if (tripDateRaw == '' || (tripDate < d) || tripDateRaw.validity.patternMismatch) {
     //} else if (tripDateRaw == '' || (tripDate < d)) {
-    alert('Date is not correct. Correct format is MM/DD/YYYY. You cannot plan departure earlier than tommorow')
-  } else {
+      alert('Date is not correct. Correct format is MM/DD/YYYY. You cannot plan departure earlier than tommorow')
+    } else {
     const city = cityField.value;
     const tripDateRefined = (tripDate.getMonth()+1)+'/'+ tripDate.getDate()+'/'+ tripDate.getFullYear();
     const daysToTrip = Math.ceil((tripDate.getTime() - d.getTime())/(1000 * 3600 * 24));
@@ -27,30 +27,36 @@ function generateAndPost(event) {
      .then(function(cityData){
        console.log("cityData: ")
        console.log(cityData)
-        //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
-        // Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
-        //                                 country: cityData.geonames[0].countryName,
-                                        // latitude: cityData.geonames[0].lat,
-                                        // longitude: cityData.geonames[0].lng,
-                                        // tripDate: tripDateRefined,
-                                        // daysToTrip: daysToTrip});
-        Client.postHandler('/cityData', {cityName: cityData.cityName,
-                                        country: cityData.country,
-                                        lowTempCurrent: cityData.lowTempCurrent,
-                                        lowTempForecast: cityData.lowTempForecast,
-                                        maxTempCurrent: cityData.maxTempCurrent,
-                                        maxTempForecast: cityData.maxTempForecast,
-                                        cloudsCurrent: cityData.cloudsCurrent,
-                                        cloudsForecast: cityData.cloudsForecast,
-                                        tripDate: tripDateRefined,
-                                        daysToTrip: daysToTrip,
-                                        photo: cityData.photo});
-     })
-    .then(function() {
-      updateUI()
-     });
+       if ('message' in cityData){
+         alert(cityData.message)
+       } else {
+         //Client.postHandler('/weather', {cityName: cityData.main.name, date: newDate, response: response});
+         // Client.postHandler('/cityData', {cityName: cityData.geonames[0].name,
+         //                                 country: cityData.geonames[0].countryName,
+                                         // latitude: cityData.geonames[0].lat,
+                                         // longitude: cityData.geonames[0].lng,
+                                         // tripDate: tripDateRefined,
+                                         // daysToTrip: daysToTrip});
+         Client.postHandler('/cityData', {cityName: cityData.cityName,
+                                         country: cityData.country,
+                                         lowTempCurrent: cityData.lowTempCurrent,
+                                         lowTempForecast: cityData.lowTempForecast,
+                                         maxTempCurrent: cityData.maxTempCurrent,
+                                         maxTempForecast: cityData.maxTempForecast,
+                                         cloudsCurrent: cityData.cloudsCurrent,
+                                         cloudsForecast: cityData.cloudsForecast,
+                                         tripDate: tripDateRefined,
+                                         daysToTrip: daysToTrip,
+                                         photo: cityData.photo});
+      }
+      })
+     .then(function() {
+       updateUI()
+      });
+       }
+
   }
-}
+//}
 
 //function that dynamically update UI
 const updateUI = async () => {

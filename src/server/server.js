@@ -47,39 +47,44 @@ app.post('/getLocation', async (req, res) => {
     const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
     const apiResponseGeonames = await fetch(apiURLGeonames);
     const cityDataGeonames = await apiResponseGeonames.json();
-    //console.log('cityDataGeonames', cityDataGeonames)
+    console.log('cityDataGeonames', cityDataGeonames)
+    if (cityDataGeonames.totalResultsCount === 0) {
+      message = 'This place does not exist in Geonames database. Plase choose another destination'
+      res.send({message: message})
+    } else {
+        const latitude = cityDataGeonames.geonames[0].lat;
+        const longitude = cityDataGeonames.geonames[0].lng;
+        const cityName = cityDataGeonames.geonames[0].name;
+        const country = cityDataGeonames.geonames[0].countryName;
+        //console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
+        //console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
+        const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
+        const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
+        //doesn't work with const
+        //const cityDataWeatherbit = await apiResponseWeatherbit.json();
+        //works with var
+        const cityDataWeatherbit = await apiResponseWeatherbit.json();
+        const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
+        const apiResponsePixabay = await fetch(apiURLPixabay)
+        //console.log("apiResponsePixabay:", apiResponsePixabay)
+        const cityDataPixabay = await apiResponsePixabay.json();
+        //console.log("cityDataPixabay:", cityDataPixabay)
 
-    const latitude = cityDataGeonames.geonames[0].lat;
-    const longitude = cityDataGeonames.geonames[0].lng;
-    const cityName = cityDataGeonames.geonames[0].name;
-    const country = cityDataGeonames.geonames[0].countryName;
-    //console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
-    //console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
-    const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
-    const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
-    //doesn't work with const
-    //const cityDataWeatherbit = await apiResponseWeatherbit.json();
-    //works with var
-    const cityDataWeatherbit = await apiResponseWeatherbit.json();
-    const apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
-    const apiResponsePixabay = await fetch(apiURLPixabay)
-    //console.log("apiResponsePixabay:", apiResponsePixabay)
-    const cityDataPixabay = await apiResponsePixabay.json();
-    //console.log("cityDataPixabay:", cityDataPixabay)
+      cityData = {
+        cityName: cityDataGeonames.geonames[0].name,
+        country: cityDataGeonames.geonames[0].countryName,
+        lowTempCurrent: cityDataWeatherbit.data[0].low_temp,
+        maxTempCurrent: cityDataWeatherbit.data[0].max_temp,
+        cloudsCurrent: cityDataWeatherbit.data[0].weather.description,
+        lowTempForecast: cityDataWeatherbit.data[15].low_temp,
+        maxTempForecast: cityDataWeatherbit.data[15].max_temp,
+        cloudsForecast: cityDataWeatherbit.data[15].weather.description,
+        photo: cityDataPixabay.hits[0].webformatURL,
+      }
+        //console.log(cityData)
+        res.send(cityData)
+    }
 
-  cityData = {
-    cityName: cityDataGeonames.geonames[0].name,
-    country: cityDataGeonames.geonames[0].countryName,
-    lowTempCurrent: cityDataWeatherbit.data[0].low_temp,
-    maxTempCurrent: cityDataWeatherbit.data[0].max_temp,
-    cloudsCurrent: cityDataWeatherbit.data[0].weather.description,
-    lowTempForecast: cityDataWeatherbit.data[15].low_temp,
-    maxTempForecast: cityDataWeatherbit.data[15].max_temp,
-    cloudsForecast: cityDataWeatherbit.data[15].weather.description,
-    photo: cityDataPixabay.hits[0].webformatURL,
-  }
-    //console.log(cityData)
-    res.send(cityData)
   } catch(error) {
     console.log('error', error);
    };
