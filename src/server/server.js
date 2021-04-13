@@ -1,9 +1,8 @@
 const fetch =require ('node-fetch')
 
-//setting to hide API credentials
+//settings to hide API credentials
 const dotenv = require('dotenv');
 dotenv.config();
-//apiKey = '${process.env.API_KEY}';
 
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
@@ -34,83 +33,59 @@ function listening(){
   console.log(`running on localport ${port}`);
 }
 
-//nowy fragment
 app.get('/', function(req, res){
-  res.sendFile('dist/index.html')
+  res.sendFile('dist/index.html');
 })
 
+//chainging APIs: Geonames, Weatherbit, Pixabay
 app.post('/getLocation', async (req, res) => {
-  //const apiURL = `https://api.openweathermap.org/data/2.5/weather?zip=${req.body.uInput}&appid=${process.env.API_KEY}&units=imperial`
-  // const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
-  // const apiResponseGeonames = await fetch(apiURLGeonames);
   try {
-    const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`
+    //fetching data from Geonames
+    const apiURLGeonames = `http://api.geonames.org/searchJSON?q=${req.body.uInput}&maxRows=10&username=${process.env.GEO_USERNAME}`;
     const apiResponseGeonames = await fetch(apiURLGeonames);
     const cityDataGeonames = await apiResponseGeonames.json();
-    console.log('cityDataGeonames', cityDataGeonames)
+    //if there is no place/city corresponding to the user input, send message to the client side
     if (cityDataGeonames.totalResultsCount === 0) {
-      message = 'This place does not exist in Geonames database. Plase choose another destination'
-      res.send({message: message})
+      message = 'This place does not exist in Geonames database. Plase choose another destination';
+      res.send({message: message});
+      //if everything is fine, chain weatherbit
     } else {
         const latitude = cityDataGeonames.geonames[0].lat;
         const longitude = cityDataGeonames.geonames[0].lng;
         const cityName = cityDataGeonames.geonames[0].name;
         const country = cityDataGeonames.geonames[0].countryName;
-        //console.log('latitude: ' + cityDataGeonames.geonames[0].lat)
-        //console.log('longitude: ' + cityDataGeonames.geonames[0].lng)
-        const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`
-        const apiResponseWeatherbit = await fetch(apiURLWeatherbit)
-        //doesn't work with const
-        //const cityDataWeatherbit = await apiResponseWeatherbit.json();
-        //works with var
+        const apiURLWeatherbit = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${latitude}&lon=${longitude}&key=${process.env.WEATHERBIT_KEY}`;
+        const apiResponseWeatherbit = await fetch(apiURLWeatherbit);
         const cityDataWeatherbit = await apiResponseWeatherbit.json();
-
-        //Pixabay - has to be 'let', to change for country search if needed (in case of no hits)
+        //chaining Pixabay - has to be 'let', to change for country search if needed (in case of no hits)
         let apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${cityName}&image_type=photo`
         let apiResponsePixabay = await fetch(apiURLPixabay)
-        //console.log("apiResponsePixabay:", apiResponsePixabay)
         let cityDataPixabay = await apiResponsePixabay.json();
-        console.log('total hits: ', cityDataPixabay.totalHits)
+        //if there are no hit for requested city, search for country photos
         if (cityDataPixabay.totalHits === 0) {
           apiURLPixabay = `https://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${country}&image_type=photo`
           apiResponsePixabay = await fetch(apiURLPixabay)
           cityDataPixabay = await apiResponsePixabay.json();
         }
-        //console.log("----------cityDataPixabay:--------------", cityDataPixabay)
-
-      cityData = {
-        cityName: cityDataGeonames.geonames[0].name,
-        country: cityDataGeonames.geonames[0].countryName,
-        lowTempCurrent: cityDataWeatherbit.data[0].low_temp,
-        maxTempCurrent: cityDataWeatherbit.data[0].max_temp,
-        cloudsCurrent: cityDataWeatherbit.data[0].weather.description,
-        lowTempForecast: cityDataWeatherbit.data[15].low_temp,
-        maxTempForecast: cityDataWeatherbit.data[15].max_temp,
-        cloudsForecast: cityDataWeatherbit.data[15].weather.description,
-        photo: cityDataPixabay.hits[0].webformatURL,
-      }
-        //console.log('---------', cityData)
-        res.send(cityData)
+        //prepare final data object to be send to client side
+        cityData = {
+          cityName: cityDataGeonames.geonames[0].name,
+          country: cityDataGeonames.geonames[0].countryName,
+          lowTempCurrent: cityDataWeatherbit.data[0].low_temp,
+          maxTempCurrent: cityDataWeatherbit.data[0].max_temp,
+          cloudsCurrent: cityDataWeatherbit.data[0].weather.description,
+          lowTempForecast: cityDataWeatherbit.data[15].low_temp,
+          maxTempForecast: cityDataWeatherbit.data[15].max_temp,
+          cloudsForecast: cityDataWeatherbit.data[15].weather.description,
+          photo: cityDataPixabay.hits[0].webformatURL,
+        }
+        res.send(cityData);
     }
   } catch(error) {
     console.log('error', error);
    };
   console.log("Got a POST request for the getLocation route");
 })
-
-// app.get('/wetherbit', async (req, res) => {
-//   const apiURL = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.body.latitude}&lon=${req.body.longitude}&key=${process.env.WEATHERBIT_KEY}`
-//   console.log("Got a GET request for the wetherbit route");
-//   console.log(req.body);
-//   const apiResponse = await fetch(apiURL);
-//   try {
-//     const weatherData = await apiResponse.json();
-//     //return weatherData;
-//     res.send(weatherData)
-//   } catch(error) {
-//     console.log('error', error);
-//   };
-// })
 
 //GET route that return projectData object
 app.get('/all', sendData);
@@ -122,7 +97,6 @@ function sendData(req, res) {
 
 //POST route that adds incoming data to projectData object
  app.post('/cityData', function(req, res){
-   //console.log(req.body);
    projectData.cityName = req.body.cityName;
    projectData.country = req.body.country;
    projectData.tripDate = req.body.tripDate;
