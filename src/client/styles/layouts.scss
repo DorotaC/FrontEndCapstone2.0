@@ -1,14 +1,15 @@
 .main_container {
   //do przemyślenia czy te dwie linijki cokolwiek robią
-  display: grid;
-  place-items: center;
+  // display: grid;
+  // place-items: center;
   border: 5px solid red;
   margin: auto;
   width: 80%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  height: 80%;
+  // position: absolute;
+  // left: 50%;
+  // top: 50%;
+  // transform: translate(-50%, -50%);
 }
 
 .app {
@@ -47,14 +48,51 @@ footer {
   background-color: pink;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   text-align: center;
 }
 
 #API_credits{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+}
+
+.holder_entry {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: AliceBlue;
+  height: auto;
+  width: auto;
+  border: 2px solid red;
+  margin: 10px;
+}
+
+#response_text_details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: CadetBlue;
+  height: 450px;
+  width: 350px;
+  border: 2px solid red;
+}
+
+#destination_details {
+  background-color: Coral;
+  height: 100px;
+  width: 100px;
+  border: 2px solid red;
+}
+
+#weather_details {
+  background-color: Cyan;
+  height: 100px;
+  width: 100px;
+  border: 2px solid red;
 }
 
 main {
