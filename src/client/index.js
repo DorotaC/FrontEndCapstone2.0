@@ -4,6 +4,7 @@ import {postHandler} from './js/postHandler.js'
 import {updateUI} from './js/app.js'
 import './styles/style.scss'
 import './styles/layouts.scss'
+import './styles/fonts.scss'
 
 export {
   init,

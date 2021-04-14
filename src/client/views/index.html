@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel App</title>
     <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="#">
 <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
@@ -16,20 +18,24 @@
     <!-- </div> -->
     </header>
     <main>
-      <div class ="holder city">
-        <label for="city">Enter city name here</label>
-        <!-- <input type="text" id="zip" placeholder="enter zip code here" pattern = "/^\d{5}$/"> -->
-        <input type="text" id="city" placeholder="enter city name here" pattern = "^[a-zA-Z]+(?:[\s-]+[a-zA-Z]+)*$">
-      </div>
-      <div class ="holder feel">
-        <label for="tripDate">When is the trip?</label>
-        <input type = "text" id="tripDate" placeholder="MM/DD/YYYY" pattern = "^(0?[1-9]|1[012])(\/)(0?[1-9]|[1-2][1-9]|3[01]|[12]0)(\/)((20)\d\d)$">
-      </div>
-      <div>
-        <button id="generate" type = "submit"> Generate </button>
+      <div class = "input_container">
+        <div class ="holder city">
+          <label for="city">Enter city name here</label>
+          <input type="text" id="city" placeholder="enter city name here" pattern = "^[a-zA-Z]+(?:[\s-]+[a-zA-Z]+)*$">
+        </div>
+        <div class ="holder feel">
+          <label for="tripDate">When is the trip?</label>
+          <input type = "text" id="tripDate" placeholder="MM/DD/YYYY" pattern = "^(0?[1-9]|1[012])(\/)(0?[1-9]|[1-2][1-9]|3[01]|[12]0)(\/)((20)\d\d)$">
+        </div>
+        <div>
+          <button id="generate" type = "submit"> Generate </button>
+        </div>
       </div>
       <div class ="holder entry">
         <div class = "title">Most Recent Entry</div>
+        <div id = "photoHolder">
+          <img id = "photo">
+        </div>
         <div id = "entryHolder">
           <div id = "cityName"></div>
           <div id = "country"></div>
@@ -40,14 +46,14 @@
           <div id = "clouds"></div>
         </div>
       </div>
-      <div id = "photoHolder">
-        <img id = "photo">
-      </div>
     </main>
     <footer>
-      Logo1
-      Logo2
-      Logo3
+      <div class = "title">App based on publicly available APIs</div>
+      <div id = "API_credits">
+        <a id = "GeoNames" href = "https://www.geonames.org/export/web-services.html" target="_blank">GeoNames</a>
+        <a id = "Weatherbit" href = "https://www.weatherbit.io/api" target="_blank">Weatherbit.io</a>
+        <a id = "Pixabay" href = "https://pixabay.com/api/docs/" target="_blank">Pixabay</a>
+      </div>
     </footer>
   </div>
 </body>
