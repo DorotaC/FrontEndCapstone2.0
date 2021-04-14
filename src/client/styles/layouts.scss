@@ -1,0 +1,30 @@
+.main_container {
+  //do przemyślenia czy te dwie linijki cokolwiek robią
+  display: grid;
+  place-items: center;
+  border: 5px solid red;
+  margin: auto;
+  width: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.app {
+  display: grid;
+  //grid-template: auto 1fr auto / auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+}
+
+header {
+  background-color: lightblue;
+}
+
+footer {
+  background-color: pink;
+}
+
+main {
+  background-color: yellow;
+}
