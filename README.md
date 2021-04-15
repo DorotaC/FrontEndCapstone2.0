@@ -20,4 +20,3 @@ Pull in an image for the country from Pixabay API when the enetered location bri
 
 ### Additional information
 As required per project requirements, there are two basic JEST test included.
-Service Workers will be included at the end, after at least one round of project review.
