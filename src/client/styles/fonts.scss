@@ -1,17 +1,33 @@
 #GeoNames {
-  font: 18px Arial;
+  font: 1em Arial;
   color: #336633;
   text-decoration: none;
 }
 
 #Weatherbit {
-  font: 18px Lato;
+  font: 1em Lato;
   color: #146;
   text-decoration: none;
 }
 
 #Pixabay {
-  font: 18px 'Open Sans', sans-serif;
+  font: bold 1em 'Open Sans', sans-serif;
   color: #000;
   text-decoration: none;
+}
+
+body {
+  font: 18px 'Mukta', sans-serif;
+}
+
+input {
+  font: 1em 'Mukta', sans-serif;
+}
+
+button {
+  font: 1em 'Mukta', sans-serif;
+}
+
+h1 {
+  font: bold 1.5em 'Mukta', sans-serif;
 }
