@@ -57,18 +57,18 @@ const updateUI = async () => {
   const req = await fetch('/all');
   try {
     const reqData = await req.json();
-    document.getElementById('cityName').innerHTML = reqData.cityName;
-    document.getElementById('country').innerHTML = reqData.country;
-    document.getElementById('date').innerHTML = reqData.tripDate;
-    document.getElementById('daysToTrip').innerHTML = reqData.daysToTrip;
+    document.getElementById('cityName').innerHTML = `place: ${reqData.cityName}`;
+    document.getElementById('country').innerHTML = `country: ${reqData.country}`;
+    document.getElementById('date').innerHTML = `trip date: ${reqData.tripDate}`;
+    document.getElementById('daysToTrip').innerHTML = `days to wait: ${reqData.daysToTrip}`;
     if (reqData.daysToTrip <= 7) {
-        document.getElementById('lowTemp').innerHTML = reqData.lowTempCurrent;
-        document.getElementById('maxTemp').innerHTML = reqData.maxTempCurrent;
-        document.getElementById('clouds').innerHTML = reqData.cloudsCurrent;
+        document.getElementById('lowTemp').innerHTML = `min temp: ${reqData.lowTempCurrent}`;
+        document.getElementById('maxTemp').innerHTML = `max temp: ${reqData.maxTempCurrent}`;
+        document.getElementById('clouds').innerHTML = `sky: ${reqData.cloudsCurrent}`;
     } else {
-        document.getElementById('lowTemp').innerHTML = reqData.lowTempForecast;
-        document.getElementById('maxTemp').innerHTML = reqData.maxTempForecast;
-        document.getElementById('clouds').innerHTML = reqData.cloudsForecast;
+        document.getElementById('lowTemp').innerHTML = `min temp: ${reqData.lowTempForecast}`;
+        document.getElementById('maxTemp').innerHTML = `max temp: ${reqData.maxTempForecast}`;
+        document.getElementById('clouds').innerHTML = `sky: ${reqData.cloudsForecast}`;
     }
     document.getElementById("photo").src = reqData.photo;
   } catch(error) {
