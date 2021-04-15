@@ -1,33 +1,45 @@
-#GeoNames {
+.GeoNames {
   font: 1em Arial;
   color: #336633;
   text-decoration: none;
 }
 
-#Weatherbit {
+.Weatherbit {
   font: 1em Lato;
   color: #146;
   text-decoration: none;
 }
 
-#Pixabay {
-  font: bold 1em 'Open Sans', sans-serif;
+.Pixabay {
+  font: 1em Lato;
   color: #000;
   text-decoration: none;
 }
 
 body {
   font: 18px 'Mukta', sans-serif;
+  color: #034;
 }
 
 input {
   font: 1em 'Mukta', sans-serif;
+  border-color: #034;
+  border-width: thin;
 }
 
 button {
-  font: 1em 'Mukta', sans-serif;
+  font: bold 1em 'Mukta', sans-serif;
 }
 
 h1 {
   font: bold 1.5em 'Mukta', sans-serif;
+}
+
+.link:hover {
+  transform: scale(1.3);
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
